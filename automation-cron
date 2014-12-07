@@ -1,0 +1,48 @@
+# m h dom mon dow user command
+0 0 * * 0 root /usr/local/bin/playlist_to_mpd.py OVR_SUN
+0 0 * * 1 root /usr/local/bin/playlist_to_mpd.py OVR_MON
+0 0 * * 2 root /usr/local/bin/playlist_to_mpd.py OVR_TUE
+0 0 * * 3 root /usr/local/bin/playlist_to_mpd.py OVR_WED
+0 0 * * 4 root /usr/local/bin/playlist_to_mpd.py OVR_THU
+0 0 * * 5 root /usr/local/bin/playlist_to_mpd.py OVR_FRI
+0 0 * * 6 root /usr/local/bin/playlist_to_mpd.py OVR_SAT
+
+0 6 * * 0 root /usr/local/bin/playlist_to_mpd.py MRN_SUN
+0 6 * * 1 root /usr/local/bin/playlist_to_mpd.py MRN_MON
+0 6 * * 2 root /usr/local/bin/playlist_to_mpd.py MRN_TUE
+0 6 * * 3 root /usr/local/bin/playlist_to_mpd.py MRN_WED
+0 6 * * 4 root /usr/local/bin/playlist_to_mpd.py MRN_THU
+0 6 * * 5 root /usr/local/bin/playlist_to_mpd.py MRN_FRI
+0 6 * * 6 root /usr/local/bin/playlist_to_mpd.py MRN_SAT
+
+0 9 * * 0 root /usr/local/bin/playlist_to_mpd.py MID_SUN
+0 9 * * 1 root /usr/local/bin/playlist_to_mpd.py MID_MON
+0 9 * * 2 root /usr/local/bin/playlist_to_mpd.py MID_TUE
+0 9 * * 3 root /usr/local/bin/playlist_to_mpd.py MID_WED
+0 9 * * 4 root /usr/local/bin/playlist_to_mpd.py MID_THU
+0 9 * * 5 root /usr/local/bin/playlist_to_mpd.py MID_FRI
+0 9 * * 6 root /usr/local/bin/playlist_to_mpd.py MID_SAT
+
+0 14 * * 0 root /usr/local/bin/playlist_to_mpd.py AFT_SUN
+0 14 * * 1 root /usr/local/bin/playlist_to_mpd.py AFT_MON
+0 14 * * 2 root /usr/local/bin/playlist_to_mpd.py AFT_TUE
+0 14 * * 3 root /usr/local/bin/playlist_to_mpd.py AFT_WED
+0 14 * * 4 root /usr/local/bin/playlist_to_mpd.py AFT_THU
+0 14 * * 5 root /usr/local/bin/playlist_to_mpd.py AFT_FRI
+0 14 * * 6 root /usr/local/bin/playlist_to_mpd.py AFT_SAT
+
+0 17 * * 0 root /usr/local/bin/playlist_to_mpd.py JAZZ_SUN
+0 17 * * 1 root /usr/local/bin/playlist_to_mpd.py JAZZ_MON
+0 17 * * 2 root /usr/local/bin/playlist_to_mpd.py JAZZ_TUE
+0 17 * * 3 root /usr/local/bin/playlist_to_mpd.py JAZZ_WED
+0 17 * * 4 root /usr/local/bin/playlist_to_mpd.py JAZZ_THU
+0 17 * * 5 root /usr/local/bin/playlist_to_mpd.py JAZZ_FRI
+0 17 * * 6 root /usr/local/bin/playlist_to_mpd.py JAZZ_SAT
+
+0 19 * * 0 root /usr/local/bin/playlist_to_mpd.py EVE_SUN
+0 19 * * 1 root /usr/local/bin/playlist_to_mpd.py EVE_MON
+0 19 * * 2 root /usr/local/bin/playlist_to_mpd.py EVE_TUE
+0 19 * * 3 root /usr/local/bin/playlist_to_mpd.py EVE_WED
+0 19 * * 4 root /usr/local/bin/playlist_to_mpd.py EVE_THU
+0 19 * * 5 root /usr/local/bin/playlist_to_mpd.py EVE_FRI
+0 19 * * 6 root /usr/local/bin/playlist_to_mpd.py EVE_SAT
