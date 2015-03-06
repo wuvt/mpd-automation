@@ -44,7 +44,7 @@ while True:
 	    print("Track has already been logged. Not updating metadata.")
 	else:
 	    try:
-		r = requests.post('http://www.wuvt.vt.edu/engineering/quicktrack/auto_winamp.php', data=payload)
+		r = requests.post('http://www.wuvt.vt.edu/trackman/automation/submit', data=payload)
 		print("Metadata updated.")
 	    except:
 		print("Could not update metadata")
