@@ -1,57 +1,111 @@
 #!/usr/bin/env python2
 import requests
 import mpd
-import json
-import time
+import os
+from select import select
 # you need to pip install requests to use this
 # Gets the artist, title, album from MPD and POSTs to QT
+submit_url = "http://127.0.0.1:8080/trackman/api/automation/log"
+mpd_password = ""
+automation_password = ""
+host = "localhost"
+port = "6600"
+metadata_file = "/tmp/metadata"
 
 # Connect to mpd
-while True:
-	client = mpd.MPDClient()
-	client.timeout = 10
-	client.idletimeout = None
-	client.connect("localhost", 6600)
+def connect():
+    client = mpd.MPDClient()
+    client.idletimeout = None
+    # If this errors handle it outside
+    client.connect(host, port)
+    client.password(mpd_password)
+    return client
 
-	old_payload = {}
-	with open('/tmp/metadata', 'r') as f:
-	    try:
-		old_payload = json.loads(f.read())    
-		print("old payload: " + str(old_payload))
-	    except:
-		print("No JSON could be decoded from saved metadata")
+# Two events are generated for each new song, not sure why but we don't
+# want to double log 
+def log_if_new(current_track):
+    last_id = load_last()
+    new_id = int(current_track['id'])
+    if new_id != last_id:
+        last_id = new_id
+        save_last(new_id)
+        log_track(current_track)
 
-	payload = {'password':'hunter2'}
-	try:
-	    payload['album'] = client.currentsong()['album']
-	except:
-	    payload['album'] = "Not available"
+def main():
+    c = connect()
+    log_if_new(c.currentsong())
+    c.send_idle('player')
+    while True:
+        can_read = select([c], [], [])[0]
+        changes = c.fetch_idle()
+        log_if_new(c.currentsong())
+        c.send_idle('player')
+def save_last(trackid):
+    try:
+        with open(metadata_file, 'w') as f:
+            f.write(str(trackid))
+    except Exception as e:
+        print("Error writing metadata: " + str(e))
 
-	try:
-	    payload['title'] = client.currentsong()['title']
-	except:
-	    payload['title'] = "Not available"
 
-	try:
-	    payload['artist'] = client.currentsong()['artist']
-	except:
-	    payload['artist'] = "Not available"
 
-	print("new payload: " + str(payload))
-	# POST
+def load_last():
+    try:
+        if not os.path.exists(metadata_file):
+            open(metadata_file, 'w').close()
+            return -1
+        else:
+            with open(metadata_file, 'r') as f:
+                try:
+                    trackid = int(f.read())
+                    return trackid
+                except:
+                    save_last(str(-1))
+                    return -1
+    except Exception as e:
+        print("Error opening metadata: " + str(e))
+        return -1
+def log_track(track):
 
-	if old_payload == payload:
-	    print("Track has already been logged. Not updating metadata.")
-	else:
-	    try:
-		r = requests.post('http://www.wuvt.vt.edu/trackman/automation/submit', data=payload)
-		print("Metadata updated.")
-	    except:
-		print("Could not update metadata")
+    payload = {}
+    try:
+        payload['album'] = track['album']
+    except:
+        payload['album'] = "Not available"
 
-	# Write payload to tempoary file.
-	with open('/tmp/metadata', 'w') as f:
-	    f.write(json.dumps(payload))
+    try:
+        payload['title'] = track['title']
+    except:
+        payload['title'] = "Not available"
 
-	client.disconnect()
-	time.sleep(5)
+    try:
+        payload['artist'] = track['artist']
+    except:
+        payload['artist'] = "Not available"
+
+    payload['password'] = automation_password
+
+    # Not yet supported, there's a server side workaround
+    #try:
+    #    payload['label'] = track['label']
+    #except:
+    #    payload['label'] = "Not available"
+
+    print("payload: " + str(payload))
+    # POST
+
+    try:
+        r = requests.post(submit_url, data=payload)
+        if (r.json()['success']):
+            print("Track logged succesfully")
+        else:
+            print("Error: " + r.json()['error'])
+    except Exception as e:
+        print("Error: " + str(e))
+
+if __name__ == "__main__":
+    while True:
+        try:
+            main()
+        except Exception as e:
+            print("Error: " + str(e))
