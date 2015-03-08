@@ -5,7 +5,7 @@ import os
 from select import select
 # you need to pip install requests to use this
 # Gets the artist, title, album from MPD and POSTs to QT
-submit_url = "http://127.0.0.1:8080/trackman/api/automation/log"
+submit_url = "https://www.wuvt.vt.edu/trackman/api/automation/log"
 mpd_password = ""
 automation_password = ""
 host = "localhost"
@@ -14,7 +14,7 @@ metadata_file = "/tmp/metadata"
 
 # Connect to mpd
 def connect():
-    client = mpd.MPDClient()
+    client = mpd.MPDClient(use_unicode=True)
     client.idletimeout = None
     # If this errors handle it outside
     client.connect(host, port)
